@@ -14,4 +14,7 @@ public interface AccountMapper {
 
     Account getAccountByLoginname(String loginname);
 
+    Account getAcountByTelephone(String telephone);
+
+    Account getAcountByEmail(String email);
 }

@@ -13,4 +13,12 @@ public class AccountService {
     public Account getAcountByLoginname(String loginname){
         return accountMapper.getAccountByLoginname(loginname);
     }
+
+    public Account getAcountByTelephone(String telephone){
+        return accountMapper.getAcountByTelephone(telephone);
+    }
+
+    public Account getAcountByEmail(String email){
+        return accountMapper.getAcountByEmail(email);
+    }
 }
