@@ -12,5 +12,7 @@
 </head>
 <body>
     INDEX
+    <br/>
+    <a href="/logout">登出</a>
 </body>
 </html>

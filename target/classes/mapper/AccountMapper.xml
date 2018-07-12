@@ -37,6 +37,20 @@
         where loginname = #{loginname}
     </select>
 
+    <select id="getAcountByTelephone" resultMap="BaseResultMap" parameterType="String">
+        select
+        <include refid="Base_Column_List" />
+        from ACCOUNT
+        where telephone = #{telephone}
+    </select>
+
+    <select id="getAcountByEmail" resultMap="BaseResultMap" parameterType="String">
+        select
+        <include refid="Base_Column_List" />
+        from ACCOUNT
+        where email = #{email}
+    </select>
+
     <select id="getAccounts" resultMap="BaseResultMap" parameterType="com.sucl.shirosecurity.entity.Account">
         select
         <include refid="Base_Column_List" />

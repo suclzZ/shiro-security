@@ -22,13 +22,12 @@
             <!-- 必须所有Reaml都成功认证策略  -->
             <!-- <bean class="org.apache.shiro.authc.pam.AllSuccessfulStrategy"></bean> -->
         </property>
-        <property name="realms">
+<!--        <property name="realms">
             <list>
                 <ref bean="otherRealm"/>
                 <ref bean="defaultRealm"/>
-
             </list>
-        </property>
+        </property>-->
     </bean>
 
 	<!-- 继承自AuthorizingRealm的自定义Realm,即指定Shiro验证用户登录的类为自定义的UserRealm.java -->
@@ -45,9 +44,8 @@
         <!-- 多Realm Bean 引用 -->
         <property name="realms">
             <list>
-                <ref bean="otherRealm"></ref>
                 <ref bean="defaultRealm"></ref>
-
+                <ref bean="otherRealm"></ref>
             </list>
         </property>
 	</bean>
