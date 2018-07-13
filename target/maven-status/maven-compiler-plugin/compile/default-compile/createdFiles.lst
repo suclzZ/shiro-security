@@ -1,9 +1,0 @@
-com\sucl\shirosecurity\security\AuthcInfoService.class
-com\sucl\shirosecurity\security\AbstractAuthenticationInfo.class
-com\sucl\shirosecurity\security\DefaultRealm.class
-com\sucl\shirosecurity\service\AccountService.class
-com\sucl\shirosecurity\web\CroeController.class
-com\sucl\shirosecurity\security\IAccount.class
-com\sucl\shirosecurity\security\OtherRealm.class
-com\sucl\shirosecurity\security\SsFormAuthenticationFilter.class
-com\sucl\shirosecurity\security\AbstractAuthorizingRealm.class

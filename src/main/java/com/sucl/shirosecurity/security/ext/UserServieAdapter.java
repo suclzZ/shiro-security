@@ -1,4 +1,4 @@
-package com.sucl.shirosecurity.security;
+package com.sucl.shirosecurity.security.ext;
 
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
