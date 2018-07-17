@@ -11,7 +11,11 @@
     <title>Title</title>
 </head>
 <body>
+<<<<<<< HEAD
     AUTHC
+=======
+    HAS admin Role
+>>>>>>> origin
     <br/>
     <a href="/logout">登出</a>
 </body>

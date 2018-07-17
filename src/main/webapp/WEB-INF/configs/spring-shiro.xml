@@ -50,7 +50,12 @@
 				/js/** = anon
 				/images/** = anon
 				/login.jsp = formAuthc
+<<<<<<< HEAD
 				/authc.jsp = roles[admin]
+=======
+                /logout = logout
+                /authc.jsp = roles[admin]
+>>>>>>> origin
 				/** = authc
 			</value>
 		</property>
