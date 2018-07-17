@@ -4,6 +4,7 @@ import com.sucl.shirosecurity.entity.Account;
 import com.sucl.shirosecurity.service.AccountService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ public class OtherRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        return null;
+        return new SimpleAuthorizationInfo();
     }
 
     @Override
