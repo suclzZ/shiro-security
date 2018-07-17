@@ -73,6 +73,8 @@
 				/css/** = anon
 				/js/** = anon
 				/login.jsp = formAuthc
+                /logout = logout
+                /authc.jsp = roles[admin]
 				/** = authc
 			</value>
 		</property>
