@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	   xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans
-         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-         http://www.springframework.org/schema/aop
-         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
-         http://www.springframework.org/schema/context
-         http://www.springframework.org/schema/context/spring-context-3.0.xsd
-         http://www.springframework.org/schema/tx
-         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <bean id="formAuthc" class="com.sucl.shirosecurity.security.SsFormAuthenticationFilter"/>
+    <bean id="formAuthc" class="org.apache.shiro.web.filter.authc.FormAuthenticationFilter"/>
 
     <bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
         <property name="authenticationStrategy">
@@ -33,22 +25,6 @@
 	<!-- 继承自AuthorizingRealm的自定义Realm,即指定Shiro验证用户登录的类为自定义的UserRealm.java -->
 	<bean id="defaultRealm" class="com.sucl.shirosecurity.security.DefaultRealm"/>
     <bean id="otherRealm" class="com.sucl.shirosecurity.security.OtherRealm"/>
-
-	<!-- Shiro默认会使用Servlet容器的Session,可通过sessionMode属性来指定使用Shiro原生Session -->
-	<!-- 即<property name="sessionMode" value="native"/>,详细说明见官方文档 -->
-	<!-- 这里主要是设置自定义的单Realm应用,若有多个Realm,可使用'realms'属性代替 -->
-	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-		<!--<property name="realm" ref="defaultRealm"/>-->
-        <!-- Shiro 多Realm认证策略 -->
-        <property name="authenticator" ref="authenticator"></property>
-        <!-- 多Realm Bean 引用 -->
-        <property name="realms">
-            <list>
-                <ref bean="defaultRealm"></ref>
-                <ref bean="otherRealm"></ref>
-            </list>
-        </property>
-	</bean>
 
 	<!-- Shiro主过滤器本身功能十分强大,其强大之处就在于它支持任何基于URL路径表达式的、自定义的过滤器的执行 -->
 	<!-- Web应用中,Shiro可控制的Web请求必须经过Shiro主过滤器的拦截,Shiro对基于Spring的Web应用提供了完美的支持 -->
@@ -72,13 +48,71 @@
 				<!-- anon表示此地址不需要任何权限即可访问 -->
 				/css/** = anon
 				/js/** = anon
+				/images/** = anon
 				/login.jsp = formAuthc
+				/authc.jsp = roles[admin]
                 /logout = logout
-                /authc.jsp = roles[admin]
 				/** = authc
 			</value>
 		</property>
 	</bean>
+
+	<!-- Shiro默认会使用Servlet容器的Session,可通过sessionMode属性来指定使用Shiro原生Session -->
+	<!-- 即<property name="sessionMode" value="native"/>,详细说明见官方文档 -->
+	<!-- 这里主要是设置自定义的单Realm应用,若有多个Realm,可使用'realms'属性代替 -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<!-- Shiro 多Realm认证策略 -->
+		<property name="authenticator" ref="authenticator"></property>
+
+		<property name="sessionManager" ref="sessionManager"></property>
+		<!--<property name="realm" ref="defaultRealm"/>-->
+		<!-- 多Realm Bean 引用 -->
+		<property name="realms">
+			<list>
+				<ref bean="defaultRealm"></ref>
+				<ref bean="otherRealm"></ref>
+			</list>
+		</property>
+		<property name="rememberMeManager" ref="rememberManager"></property>
+	</bean>
+
+	<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+		<!--session超时时间-->
+		<property name="globalSessionTimeout" value="3600000"></property>
+		<!--session缓存-->
+		<property name="cacheManager" ref="cacheManager"></property>
+		<!--删除失效session-->
+		<property name="deleteInvalidSessions" value="true"></property>
+		<!--session校验器-->
+		<property name="sessionValidationSchedulerEnabled" value="true"></property>
+		<!--session本地存储-->
+		<property name="sessionDAO" ref="sessionDao"></property>
+		<!--是否将sessionId存储到cookie-->
+		<property name="sessionIdCookieEnabled" value="true"></property>
+		<!--默认cookie存储的值-->
+		<!--<property name="sessionIdCookie" value="sessionIdCookie"></property>-->
+	</bean>
+
+	<bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManagerConfigFile" value="classpath:encache.xml"></property>
+	</bean>
+
+	<bean id="sessionDao" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">
+		<property name="cacheManager" ref="cacheManager"></property>
+	</bean>
+
+	<!--CookieRememberMeManager-->
+	<bean id="rememberManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+		<property name="cookie" ref="simpleCookie"></property>
+		<property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('sucl')}"></property>
+	</bean>
+
+	<bean id="simpleCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+		<property name="httpOnly" value="true"></property>
+		<property name="maxAge" value="180000"></property>
+		<property name="value" value="rememberMe"></property>
+	</bean>
+
 	<!-- Shiro生命周期处理器 -->
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 	<!-- 开启shiro注解-->
@@ -89,4 +123,5 @@
 	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
 		<property name="securityManager" ref="securityManager"/>
 	</bean>
-</beans>  
+
+</beans>

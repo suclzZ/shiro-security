@@ -11,6 +11,7 @@
     <title>Title</title>
 </head>
 <body>
+    AUTHC
     HAS admin Role
     <br/>
     <a href="/logout">登出</a>

@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="images/favicon.ico" />
     <!-- Main CSS-->
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <!-- Font-icon css-->
@@ -40,8 +41,8 @@
             </div>
           </div>
           <div class="form-group btn-container">
-            <%--<button class="btn btn-primary btn-block" onclick="dosubmit();"><i class="fa fa-sign-in fa-lg fa-fw"></i>SIGN IN</button>--%>
-              <input type="submit" value="SIGN IN">
+            <button class="btn btn-primary btn-block" onclick="dosubmit();"><i class="fa fa-sign-in fa-lg fa-fw"></i>SIGN IN</button>
+            <%--<input type="submit" value="SIGN IN">--%>
           </div>
         </form>
 
@@ -64,12 +65,12 @@
       function dosubmit() {
           var username = $('#username').val(),password=$('#password').val();
           $.ajax({
-              url:'/login',
+              url:'/login.jsp',
               method:'POST',
               data:{username:username,password:password},
               success:function(res){
                   console.info(res);
-                  window.location = 'index.html'
+                  window.location = 'index.jsp'
               }
           })
       }

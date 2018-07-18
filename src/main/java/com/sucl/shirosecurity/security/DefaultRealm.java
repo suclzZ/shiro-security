@@ -28,16 +28,13 @@ public class DefaultRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
+        Object principal = principalCollection.getPrimaryPrincipal();
+        //此时是account
+        System.out.println(principal);//构建SimpleAuthenticationInfo的第一个参数
         //必须根据登录名等唯一字段增加权限，不然多realm都会执行此方法，若有一个有权限，另一个默认也会加上
-        AuthorizationInfo authorizationInfo = super.getAuthorizationInfo(principalCollection);
-
-        org.apache.shiro.authc.Account principal = (org.apache.shiro.authc.Account) principalCollection.getPrimaryPrincipal();
-        SimpleAuthorizationInfo simpleAuthorInfo = new SimpleAuthorizationInfo();
-        List<String> roles = new ArrayList<String>();
-        roles.add("admin");
-        simpleAuthorInfo.addRoles(roles);
-    //    simpleAuthorInfo.addStringPermissions(permissionList);
-        return simpleAuthorInfo;
+        SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+        authorizationInfo.addRole("admin");
+        return authorizationInfo;
     }
 
     /**
@@ -50,7 +47,8 @@ public class DefaultRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) token;
         String username = usernamePasswordToken.getUsername();
-        Account account = accountService.getAcountByLoginname(username);
+
+        Account account = accountService.getAcountByLoginname(username);//用户名、邮箱、手机号 分别查询
         if(account == null) return null;
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(account,account.getPassword(),account.getUsername());
         return authenticationInfo;
