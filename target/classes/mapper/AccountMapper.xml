@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sucl.shirosecurity.mapper.AccountMapper" >
+
+    <resultMap id="BaseResultMap" type="com.sucl.shirosecurity.entity.Account" >
+        <id column="ACCOUNT_ID" property="accountId" jdbcType="VARCHAR" />
+        <result column="LOGINNAME" property="loginname" jdbcType="VARCHAR" />
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+        <result column="USERNAME" property="username" jdbcType="VARCHAR" />
+        <result column="TELEPHONE" property="telephone" jdbcType="VARCHAR" />
+        <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+        <result column="AGE" property="age" jdbcType="INTEGER"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+      account_id, loginname, password, username, telephone, email,age,status
+    </sql>
+
+    <select id="getAccount" resultMap="BaseResultMap" parameterType="String">
+        select
+        <include refid="Base_Column_List" />
+        from ACCOUNT
+        where ACCOUNT_ID = #{id}
+    </select>
+    
+    <select id="getAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ACCOUNT
+    </select>
+
+    <select id="getAccountByLoginname" resultMap="BaseResultMap" parameterType="String">
+        select
+        <include refid="Base_Column_List" />
+        from ACCOUNT
+        where loginname = #{loginname}
+    </select>
+
+    <select id="getAcountByTelephone" resultMap="BaseResultMap" parameterType="String">
+        select
+        <include refid="Base_Column_List" />
+        from ACCOUNT
+        where telephone = #{telephone}
+    </select>
+
+    <select id="getAcountByEmail" resultMap="BaseResultMap" parameterType="String">
+        select
+        <include refid="Base_Column_List" />
+        from ACCOUNT
+        where email = #{email}
+    </select>
+
+    <select id="getAccounts" resultMap="BaseResultMap" parameterType="com.sucl.shirosecurity.entity.Account">
+        select
+        <include refid="Base_Column_List" />
+        from ACCOUNT
+        <where>
+            <trim prefix="and" prefixOverrides=" ">
+                <if test="loginname!=null">
+                    and loginname = #{loginname}
+                </if>
+                <if test="telephone!=null">
+                    and telephone = #{telephone}
+                </if>
+                <if test="email!=null">
+                    and email = #{email}
+                </if>
+            </trim>
+        </where>
+    </select>
+</mapper>
