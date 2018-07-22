@@ -104,7 +104,7 @@
 	<!--CookieRememberMeManager-->
 	<bean id="rememberManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
 		<property name="cookie" ref="simpleCookie"></property>
-		<property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('2AvVhdsgUs0FSA3SDFAdag==')}"></property>
+		<property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('03RvItlW1tAE6QOkgaVtjA==')}"></property>
 	</bean>
 
 	<bean id="simpleCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
