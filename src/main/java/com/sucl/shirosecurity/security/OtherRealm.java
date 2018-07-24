@@ -24,6 +24,7 @@ public class OtherRealm extends AuthorizingRealm {
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) token;
         String username = usernamePasswordToken.getUsername();
         Account account = accountService.getAcountByTelephone(username);
+        if(account==null) return null;
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(account,account.getPassword(),getName());
         return authenticationInfo;
     }

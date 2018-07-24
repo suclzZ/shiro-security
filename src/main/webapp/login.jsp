@@ -28,13 +28,13 @@
           </div>
           <div class="form-group">
             <label class="control-label">PASSWORD</label>
-            <input class="form-control" id="password" value="123" type="password" name="password" placeholder="Password">
+            <input class="form-control" id="password" value="123456" type="password" name="password" placeholder="Password">
           </div>
           <div class="form-group">
             <div class="utility">
               <div class="animated-checkbox">
                 <label>
-                  <input type="checkbox"><span class="label-text">Stay Signed in</span>
+                  <input id="rememberMe" type="checkbox"><span class="label-text">Stay Signed in</span>
                 </label>
               </div>
               <p class="semibold-text mb-2"><a href="#" data-toggle="flip">Forgot Password ?</a></p>
@@ -63,11 +63,12 @@
       });
 
       function dosubmit() {
-          var username = $('#username').val(),password=$('#password').val();
+          var username = $('#username').val(),password=$('#password').val(),
+              rememberMe = $('#rememberMe').is(':checked');
           $.ajax({
               url:'/login.jsp',
               method:'POST',
-              data:{username:username,password:password},
+              data:{username:username,password:password,rememberMe:rememberMe},
               success:function(res){
                   console.info(res);
                   window.location = 'index.jsp'
